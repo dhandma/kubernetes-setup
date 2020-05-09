@@ -54,12 +54,19 @@ sudo swapoff -va
 
 sudo apt-get update
 sudo apt-get install -y docker.io
+#Optionalk step if you want to add ubuntu(master node user in my case it is kmaster) to docker group 
+usermod -aG docker kmaster
+
+#enable IP Table
+sudo modprobe br_netfilter
+sudo sysctl -p
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
 
 # Find and Install a specific version of kubernetes packages as follows if needed:
 sudo apt-cache madison kubeadm
 sudo apt-get install -y kubelet=1.7.15-00 kubeadm=1.7.15-00 kubectl=1.7.15-00 kubernetes-cni=0.5.1-00
 # or else just install the latest one using
-sudo apt-get install -y kubeadm
+sudo apt-get install kubelet kubeadm kubectl kubernetes-cni -y
 
 # bootstrap kubernetes
 sudo kubeadm init --pod-network-cidr=10.244.0.0/16
@@ -78,6 +85,10 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl get nodes -a -o wide --show-labels
+
+#Update the kubernets configuration to start the kubelet and below environment variable
+sudo vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+Environment="cgroup-driver=systemd/cgroup-driver=cgroupfs"
 
 # Download and install flannel CNI (Only on Master node once)
 wget https://raw.githubusercontent.com/coreos/flannel/v0.11.0/Documentation/kube-flannel.yml
