@@ -64,7 +64,7 @@ sudo sysctl net.bridge.bridge-nf-call-iptables=1
 
 # Find and Install a specific version of kubernetes packages as follows if needed:
 sudo apt-cache madison kubeadm
-sudo apt-get install -y kubelet=1.7.15-00 kubeadm=1.7.15-00 kubectl=1.7.15-00 kubernetes-cni=0.5.1-00
+sudo apt-get install -y kubelet=1.17.0-00 kubeadm=1.17.0-00 kubectl=1.17.0-00 kubernetes-cni
 # or else just install the latest one using
 sudo apt-get install kubelet kubeadm kubectl kubernetes-cni -y
 
