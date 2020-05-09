@@ -96,6 +96,9 @@ wget https://raw.githubusercontent.com/coreos/flannel/v0.11.0/Documentation/kube
 sed -i 's/vxlan/host-gw/' kube-flannel.yml 
 kubectl apply -f kube-flannel.yml
 
+###You can use viewnet as CNI 
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
 # Download and install kube-router CNI if you don't want to use flannel above (Only on Master node once)
 wget https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
 # Turn off network policies
